@@ -1,0 +1,304 @@
+diary on
+format compact
+% Leo Scarano
+% 7984
+% Section C3
+% Math 250 MATLAB Lab Assignment #4
+rand('seed', 7984)
+A = rmat(3,2)
+A =
+     0     8
+     5     4
+     5     5
+rank(A)
+ans =
+     2
+% Question 1a.
+u = A(:, 1)
+u =
+     0
+     5
+     5
+v=A(;, 1)
+
+v=A(:, 1)
+v =
+     0
+     5
+     5
+[s, t] = meshgrid((-1:0.1:1), (-1:0.1:1));
+X=s*u(1)+t*v(1); Y=s*u(2)+t*v(2); Z=s*u(3)+t*v(3);
+surf(X,Y,Z); axis square; colormap hot, hold on
+% Question 1b.
+b = rvect(3)
+b =
+     8
+     4
+     1
+r=-1:0.05:1;
+plot3(r*b(1), r*b(2), r*b(3), '--')
+% We cannot find a solution to Ax=b because b is not contained in the colspace, and since the colspace determines all possible values for x, there is no way to find some solution x.
+% Question 1d.
+z = rand(2,1), c = A*z
+z =
+    0.4890
+    0.1286
+c =
+    1.0288
+    2.9592
+    3.0878
+figure, surf(X,Y,Z); axis square; colormap hot, hold on
+plot3(r*c(1), r*c(2), r*c(3), '+')
+% Question 2
+B = rmat(3,3), rank(B)
+B =
+     3     1     5
+     0     0     2
+     1     1     8
+ans =
+     3
+A = [B(:,1), B(:,2), 2*B(:,1) + 3*B(:,2), 4*B(:,1) - 5*B(:,2), B(:,3)],
+A =
+     3     1     9     7     5
+     0     0     0     0     2
+     1     1     5    -1     8
+R=rref(A)
+R =
+     1     0     2     4     0
+     0     1     3    -5     0
+     0     0     0     0     1
+% Question 2a.
+% cols 1, 2 and 5 are pivot columns of A and R because they are not linear combinations of R, and form linearly independent columns of both R and A. The pivot columns are linearly independent, hence they aren't linear combinations, hence they are the pivot columns of R.
+% These column vectors are [2 3 0] and [4 -5 0] because they are linear combinations and form linearly dependent columb vectors. Due to this, they are not pivot columns.
+% Question 2b.
+% Free variables of Ax=0 are x_3 anx x_4
+% Question 2c.
+N = nulbasis(A)
+N =
+    -2    -4
+    -3     5
+     1     0
+     0     1
+     0     0
+v1 = N(:,1), v2 = N(:,2)
+v1 =
+    -2
+    -3
+     1
+     0
+     0
+v2 =
+    -4
+     5
+     0
+     1
+     0
+% The fourth component of v1 is 1 and the fifth component of v1 is 0
+% The third component of v2 is 1 and the fifth component of v2 is 0
+% Question 2d.
+s = rand(1), t = rand(1), x = s*v1 + t*v2
+s =
+    0.8034
+t =
+    0.4344
+x =
+   -3.3445
+   -0.2380
+    0.8034
+    0.4344
+         0
+% x satisfies Ax=0 because R is the rref(A) and they share the same solutions. Tranforming the matrix into RREF allows us to write the solutions to the system. Also, since the columns of v1 and v2 are in the nullspace, they are the solutions to Ax=0.
+% Question 3
+A = rmat(5,3), R = rref(A)
+A =
+     3     1     2
+     5     8     8
+     3     7     3
+     0     0     4
+     4     2     8
+R =
+     1     0     0
+     0     1     0
+     0     0     1
+     0     0     0
+     0     0     0
+% There exists b such that Ax = b does not have a solution because there are more equations than variables, which means there must be a b in which there is no solution. 
+b = rmat(5,1), xp = partic(A,b)
+b =
+     9
+     7
+     6
+     2
+     8
+xp =
+     []
+b = rand(1)*A(:,1) + rand(1)*A(:,2) + rand(1)*A(:,3)
+b =
+    4.2710
+   11.7941
+    6.0345
+    3.1174
+    9.9605
+xp = partic(A, b)
+xp =
+    0.8494
+    0.1640
+    0.7793
+A*xp
+ans =
+    4.2710
+   11.7941
+    6.0345
+    3.1174
+    9.9605
+% There is a solution to Ax = b because A*xp = b, which means that b is a linear combination of A, and is a solution to Ax=b.
+% Question 3b 
+A = rmat(3, 5), R = rref(A)
+A =
+     5     9     5     8     3
+     0     5     7     6     4
+     3     0     7     2     8
+R =
+    1.0000         0         0   -0.0761    0.5433
+         0    1.0000         0    0.7543   -0.4740
+         0         0    1.0000    0.3183    0.9100
+% Ax = b has a solution for every vector because there are three pivot columns and 5 columns in total, making the nullity 2, which means there are two free variables. Free variables means that the system has infinite solutions, which is every b in R^3
+b = rmat(3,1), xp = partic(A, b)
+b =
+     9
+     8
+     6
+xp =
+    0.1349
+    0.4810
+    0.7993
+         0
+         0
+A*xp = b
+
+A*xp
+ans =
+     9
+     8
+     6
+% These rows are zero because they correspond to the free variables. The vector shows the linear combination of the pivot columns with the free variables set to 0. 
+% Question 4
+N = nulbasis(A)
+N =
+    0.0761   -0.5433
+   -0.7543    0.4740
+   -0.3183   -0.9100
+    1.0000         0
+         0    1.0000
+v1 = N(:,1), v2 = N(:,2)
+v1 =
+    0.0761
+   -0.7543
+   -0.3183
+    1.0000
+         0
+v2 =
+   -0.5433
+    0.4740
+   -0.9100
+         0
+    1.0000
+x = xp + rand(1)*v1 + rand(1)*v2
+x =
+   -0.0467
+    0.3845
+    0.3297
+    0.3707
+    0.3864
+A*x
+ans =
+     9
+     8
+     6
+% Question 4b
+x = xp-9*v1+8*v2
+x =
+   -4.8962
+   11.0623
+   -3.6159
+   -9.0000
+    8.0000
+A*x
+ans =
+    9.0000
+    8.0000
+    6.0000
+b
+b =
+     9
+     8
+     6
+% Question 5a.
+A = [.3,0;.14,0;.56,1]
+A =
+    0.3000         0
+    0.1400         0
+    0.5600    1.0000
+B = [.5,0,0;.5,1,.6;0,0,.4]
+B =
+    0.5000         0         0
+    0.5000    1.0000    0.6000
+         0         0    0.4000
+C = [1,.3,0;0,.2,0;0,.35,.7;0,.15,.3]
+C =
+    1.0000    0.3000         0
+         0    0.2000         0
+         0    0.3500    0.7000
+         0    0.1500    0.3000
+M = C*B*A
+M =
+    0.3378    0.1800
+    0.1252    0.1200
+    0.3759    0.4900
+    0.1611    0.2100
+x = 1000*rvect(2), y = A*x, z = B*y, w = C*z
+x =
+        1000
+        6000
+y =
+         300
+         140
+        6560
+z =
+         150
+        4226
+        2624
+w =
+   1.0e+03 *
+    1.4178
+    0.8452
+    3.3159
+    1.4211
+% This shows that 15000 vehicles entered a one way street the same number of cars move across the intersection the same number of vehicles exit
+% Question 5b.
+y = [270 126 704]'
+y =
+   270
+   126
+   704
+rref([A y])
+ans =
+     1     0   900
+     0     1   200
+     0     0     0
+% YEs, since Ax=b is consistent
+% Question 5c
+e = [100 200 300 400]'
+e =
+   100
+   200
+   300
+   400
+rref([C w])
+ans =
+           1           0           0         150
+           0           1           0        4226
+           0           0           1        2624
+           0           0           0           0
+% This equation is consistent as well, since there are no rows such that the only non-zero entry is in the last column (aka solution vector)
+diary off

@@ -1,0 +1,255 @@
+diary on
+% Leo Scarano
+% 7984
+% Section C3
+format compact
+
+rand('seed', 7984)
+u = rvect(2), v = rvect(2)
+u =
+     0
+     5
+v =
+     5
+     8
+rank([u, v])
+ans =
+     2
+% Question 1a
+% The triangle inequality is as follows: ||u + v|| = ||u|| + ||v||
+norm(u)
+ans =
+     5
+norm(v)
+ans =
+    9.4340
+norm(u+v)
+ans =
+   13.9284
+% Question 1b
+% The cauchy-Schwarz Inequality is as follows: |u*v| <= ||u|| * ||v||
+abs(u'*v)
+ans =
+    40
+norm(u)'*norm(v)
+ans =
+   47.1699
+% Question 1c. 
+norm(u)*norm(v)
+ans =
+   47.1699
+w = ((u'*v)/(v'*v))*v
+w =
+    2.2472
+    3.5955
+z = u -w
+z =
+   -2.2472
+    1.4045
+z'*v
+ans =
+     0
+% Question 1d.
+P = v*inv(v'*v)*v'
+P =
+    0.2809    0.4494
+    0.4494    0.7191
+% V is a 2x1 matrix (nxm) and v multiplied by its transpose will be an nxn matrx. This is why P is a 2x2 matrix, with its entries being divided by inv(v'*v)
+P*u
+ans =
+    2.2472
+    3.5955
+w
+w =
+    2.2472
+    3.5955
+% Question 2
+u1 = rvect(3), u2 = rvect(3), u3 = rvect(3)
+u1 =
+     4
+     5
+     8
+u2 =
+     4
+     1
+     4
+u3 =
+     1
+     3
+     0
+rank([u1, u2, u3])
+ans =
+     3
+r = 0:0.05:1; hold on
+plot3(r*u1(1), r*u1(2), r*u1(3), 'r:')
+plot3(r*u2(1),r*u2(2),r*u2(3), ’g:’)
+ plot3(r*u2(1),r*u2(2),r*u2(3), ’g:’)
+
+plot3(r*u2(1), r*u2(2), r*u2(3), 'g:')
+plot3(r*u3(1), r*u3(2), r*u3(3), 'b:')
+% The position of the graphh indicates that the three vectors are not orthogonal to each other 
+% Question 2b.
+v1 = u1
+v1 =
+     4
+     5
+     8
+P1 = v1*inv(v1'*v1)*v1', v2 = u2 - P1*u2
+P1 =
+    0.1524    0.1905    0.3048
+    0.1905    0.2381    0.3810
+    0.3048    0.3810    0.6095
+v2 =
+    1.9810
+   -1.5238
+   -0.0381
+v1'*v2
+ans =
+   1.7764e-15
+% This error is not significant enough numerically to undermine the fact that the vectors are orthogonal. In the end, the span of R will have the same span as the span of the orthogonal set of vectors resulting from GS algorithm
+plot3(r*v2(1), r*v2(2), r*v2(3), 'g-.')
+P2 = v2*inv(v2'*v2)*v2', v3 = ur - P1*u3 - P2*u3
+P2 =
+    0.6281   -0.4832   -0.0121
+   -0.4832    0.3717    0.0093
+   -0.0121    0.0093    0.0002
+P2 = v2*inv(v2'*v2)*v2', v3 = u3 - P1*u3 - P2*u3
+P2 =
+    0.6281   -0.4832   -0.0121
+   -0.4832    0.3717    0.0093
+   -0.0121    0.0093    0.0002
+v3 =
+    1.0976
+    1.4634
+   -1.4634
+plot3(r*v3(1), r*v3(2), r*v3(3), 'b-.')
+% Question 2c.
+w1 = v1/norm(v1), w2 = v2/norm(v2), w3 = v3/norm(v3)
+w1 =
+    0.3904
+    0.4880
+    0.7807
+w2 =
+    0.7925
+   -0.6096
+   -0.0152
+w3 =
+    0.4685
+    0.6247
+   -0.6247
+Q = [w1, w2, w3]
+Q =
+    0.3904    0.7925    0.4685
+    0.4880   -0.6096    0.6247
+    0.7807   -0.0152   -0.6247
+% The entries of Q are orthonormal vectors resulting from GS algorithm. QT*Q is a dot product and since the vectors are orthogonal, the dot product is 0. Q*QT means that the the entries will be equal to 0 due to their orthogonal vectors, except for the entries that correspond to both Q and QT (since they will share the same rows and columns). These entries will equal to 1 since the orthogonal entries are multiplied by themselves, meaning they are unit vectors. This is the identity matrix and the set of orthonormal (unit vectors) vectors correspond to it. 
+% Q^-1 = Q^T since Q is an orthogonal matrix. It's inverse will be its transpose because each vector is perpendicular, so the transpose will just be the corresponding perp. vector.
+transpose(Q)*Q
+ans =
+    1.0000    0.0000   -0.0000
+    0.0000    1.0000   -0.0000
+   -0.0000   -0.0000    1.0000
+inv(Q)
+ans =
+    0.3904    0.4880    0.7807
+    0.7925   -0.6096   -0.0152
+    0.4685    0.6247   -0.6247
+% Question 2d.
+A = [u1, u2, u3], R = Q'*A
+A =
+     4     4     1
+     5     1     3
+     8     4     0
+R =
+   10.2470    5.1723    1.8542
+    0.0000    2.4995   -1.0364
+   -0.0000   -0.0000    2.3426
+R = Q'*A
+R =
+   10.2470    5.1723    1.8542
+    0.0000    2.4995   -1.0364
+   -0.0000   -0.0000    2.3426
+Q*R
+ans =
+    4.0000    4.0000    1.0000
+    5.0000    1.0000    3.0000
+    8.0000    4.0000         0
+% Question 3
+a1 = rvect(5); a2 = rvect(5); a3 = rvect(5); A = [a1, a2, a3]
+A =
+     1     2     5
+     1     8     3
+     0     8     0
+     1     4     4
+     5     3     1
+% Question 3a.
+Q = grams(A); w1 = Q(:, 1), w2 = Q(:, 2), w3 = Q(:, 3)
+w1 =
+    0.1890
+    0.1890
+         0
+    0.1890
+    0.9449
+w2 =
+    0.0856
+    0.6181
+    0.7100
+    0.2631
+   -0.1933
+w3 =
+    0.7430
+    0.0813
+   -0.4018
+    0.4624
+   -0.2573
+Q'*Q
+ans =
+    1.0000   -0.0000    0.0000
+   -0.0000    1.0000    0.0000
+    0.0000    0.0000    1.0000
+% We see this is an identity matrix, which proves {w1, w2, w3} is an orthonormal set of vectors
+% Question 3b.
+P = w1*w1' + w2*w2' + w3*w3'
+P =
+    0.5950    0.1490   -0.2377    0.4017   -0.0292
+    0.1490    0.4243    0.4061    0.2359    0.0381
+   -0.2377    0.4061    0.6655    0.0010   -0.0339
+    0.4017    0.2359    0.0010    0.3187    0.0087
+   -0.0292    0.0381   -0.0339    0.0087    0.9965
+
+v = rvect(5)
+v =
+     8
+     7
+     0
+     2
+     2
+w = P * v, z = v - w
+w =
+    6.5485
+    4.7108
+    0.8755
+    5.5202
+    2.0441
+z =
+    1.4515
+    2.2892
+   -0.8755
+   -3.5202
+   -0.0441
+P * z
+ans =
+   1.0e-14 *
+   -0.2291
+   -0.0290
+    0.1551
+   -0.1956
+    0.1492
+PW = A * inv(A'*A)*A'
+PW =
+    0.5950    0.1490   -0.2377    0.4017   -0.0292
+    0.1490    0.4243    0.4061    0.2359    0.0381
+   -0.2377    0.4061    0.6655    0.0010   -0.0339
+    0.4017    0.2359    0.0010    0.3187    0.0087
+   -0.0292    0.0381   -0.0339    0.0087    0.9965
+diary off
